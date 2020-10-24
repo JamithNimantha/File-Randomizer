@@ -4,6 +4,7 @@ import com.debuggerme.filerandomizer.util.FilenameComparator;
 import com.debuggerme.filerandomizer.util.Randomizer;
 import com.debuggerme.filerandomizer.util.WindowsExplorerStringComparator;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,16 +70,9 @@ public class MainController implements Initializable {
         if (selectedDirectory != null) {
             dirPath = selectedDirectory.getAbsolutePath();
             txtFolder.setText(dirPath);
-            btnStart.setDisable(false);
             lblNumOfArticles.setText("Found " + getFiles(selectedDirectory).length + " Files");
             lblNumOfArticles.setVisible(true);
         }
-        else {
-            if (dirPath == null) {
-                btnStart.setDisable(true);
-            }
-        }
-
     }
 
     private File[] getFiles(File dir) {
@@ -91,14 +85,13 @@ public class MainController implements Initializable {
     void btnStartOnStart(ActionEvent event) {
         loading(true);
         if (dirPath != null) {
-            File outputFolder = new File(dirPath.concat(" - Randomized"));
             File[] files = getFiles(new File(dirPath));
             if (files.length < 1) {
                 showAlert(
                         Alert.AlertType.ERROR,
-                        "No Text Files Exists!",
+                        "NO FILES FOUND !",
                         ButtonType.OK,
-                        "Make Sure Text Files(.txt) Exists!"
+                        "Make Sure Files Are Exists In The Folder !"
                 );
                 loading(false);
             } else {
@@ -190,22 +183,36 @@ public class MainController implements Initializable {
     private void loading(final boolean show) {
         Platform.runLater(() -> {
             imgLoader.setVisible(show);
-            btnStart.setDisable(show);
+            if (show){
+                unBindBtnStart();
+                btnStart.setDisable(show);
+            } else {
+                bindBtnStart();
+            }
             btnFolder.setDisable(show);
         });
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        btnStart.setDisable(true);
         lblNumOfArticles.setVisible(false);
         this.randomizer = new Randomizer(this);
         txtNumberOfSet.setTextFormatter(new TextFormatter<>(filter));
         txtNumberPerSet.setTextFormatter(new TextFormatter<>(filter));
-//        btnStart.disableProperty()
-//                .bind(txtNumberOfSet.textProperty().isEmpty()
-//                        .or(txtNumberPerSet.textProperty().isEmpty())
-//                        .or(txtFolder.textProperty().isEmpty())
-//        );
+        bindBtnStart();
+
+    }
+
+    private void bindBtnStart() {
+        btnStart.disableProperty()
+                .bind(txtNumberOfSet.textProperty().isEmpty()
+                        .or(txtNumberPerSet.textProperty().isEmpty())
+                        .or(txtFolder.textProperty().isEmpty())
+                );
+    }
+
+    private void unBindBtnStart() {
+        btnStart.disableProperty()
+                .unbind();
     }
 
     private UnaryOperator<TextFormatter.Change> filter = change -> {
