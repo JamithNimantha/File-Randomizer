@@ -1,10 +1,8 @@
 package com.debuggerme.filerandomizer.controller;
 
-import com.debuggerme.filerandomizer.util.FilenameComparator;
 import com.debuggerme.filerandomizer.util.Randomizer;
 import com.debuggerme.filerandomizer.util.WindowsExplorerStringComparator;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,9 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
-
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -97,9 +93,6 @@ public class MainController implements Initializable {
             } else {
                 int numberOfSet = Integer.parseInt(txtNumberOfSet.getText());
                 int numberPerSet = Integer.parseInt(txtNumberPerSet.getText());
-                for (File file : files) {
-                    System.out.println(file.getName());
-                }
                 if (numberPerSet <= files.length) {
                     randomizeFiles(files, numberOfSet, numberPerSet);
                 } else {
@@ -138,10 +131,7 @@ public class MainController implements Initializable {
                             FileUtils.deleteQuietly(targetDir);
                                 for (int i : singleSet) {
                                     FileUtils.copyFileToDirectory(files[i-1], targetDir);
-                                    System.out.println(targetDir);
                                     Platform.runLater(() -> lblProgress.setText("Completed " + (finalSet +1) + " out of " + numberOfSet + " Sets"));
-                                    System.out.println(i);
-                                    System.out.println(files[i-1].getName());
                                 }
                             return null;
                         }
