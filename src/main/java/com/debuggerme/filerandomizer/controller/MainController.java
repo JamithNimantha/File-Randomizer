@@ -122,7 +122,7 @@ public class MainController implements Initializable {
                 AtomicInteger index = new AtomicInteger(1);
                 for (int set = 0; set < numberOfSet; set++) {
                     int[] singleSet = Randomizer.generateSingleSet(numberPerSet, 1, files.length);
-                    File targetDir = new File(files[0].getParentFile().getAbsolutePath().concat(File.separator + "batch " + (set + 1)));
+                    File targetDir = new File(files[0].getParentFile().getAbsolutePath().concat(File.separator + "Batch " + (set + 1)));
                     int finalSet = set;
                     Task objectTask = new Task() {
                         @Override
