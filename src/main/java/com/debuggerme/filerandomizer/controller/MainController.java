@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
@@ -55,8 +56,6 @@ public class MainController implements Initializable {
 
     @FXML
     private TextField txtNumberPerSet;
-
-    private Randomizer randomizer;
 
     @FXML
     void btnFolderOnAction(ActionEvent event) {
@@ -122,8 +121,8 @@ public class MainController implements Initializable {
             protected Void call() {
                 AtomicInteger index = new AtomicInteger(1);
                 for (int set = 0; set < numberOfSet; set++) {
-                    int[] singleSet = randomizer.generateSingleSet(numberPerSet, 1, files.length);
-                    File targetDir = new File(files[0].getParentFile().getAbsolutePath().concat("\\batch " + ( set+1)));
+                    int[] singleSet = Randomizer.generateSingleSet(numberPerSet, 1, files.length);
+                    File targetDir = new File(files[0].getParentFile().getAbsolutePath().concat(File.separator + "batch " + (set + 1)));
                     int finalSet = set;
                     Task objectTask = new Task() {
                         @Override
@@ -185,7 +184,6 @@ public class MainController implements Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         lblNumOfArticles.setVisible(false);
-        this.randomizer = new Randomizer(this);
         txtNumberOfSet.setTextFormatter(new TextFormatter<>(filter));
         txtNumberPerSet.setTextFormatter(new TextFormatter<>(filter));
         bindBtnStart();

@@ -19,11 +19,11 @@ public class FileRandomizerApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         notifyPreloader(new Preloader.StateChangeNotification(Preloader.StateChangeNotification.Type.BEFORE_START));
         Parent parent = FXMLLoader.load(this.getClass().getResource("/com/debuggerme/filerandomizer/view/Main.fxml"));
-//        primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/com/debuggerme/fiverr/articlerewriter/assets/logo.png")));
+        primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/com/debuggerme/filerandomizer/assets/logo.png")));
         Scene temp = new Scene(parent);
         primaryStage.setScene(temp);
         primaryStage.centerOnScreen();
-        primaryStage.setTitle("File Randomizer Tool v1.1 By DebuggerMe");
+        primaryStage.setTitle("File Randomizer Tool v 1.0 By DebuggerMe");
         primaryStage.setResizable(false);
 
         primaryStage.show();
